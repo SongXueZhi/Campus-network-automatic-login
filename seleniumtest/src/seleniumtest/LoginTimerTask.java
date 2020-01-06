@@ -75,7 +75,7 @@ public class LoginTimerTask extends TimerTask {
              prop.setProperty("url", driver.getCurrentUrl()); //记录成功转向后的url，以备使用
             //根据html标签 执行登录事件
             driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-            driver.findElement(By.id("password")).sendKeys(new String[]{"Aa110120"});
+            driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
             driver.findElement(By.id("mobilelogin_submit")).click();
             
             //将成功打开的url存入配置文件
@@ -92,7 +92,7 @@ public class LoginTimerTask extends TimerTask {
             while (true) {               
                 if (driver.getTitle().contains(DONGHUA)) {   //如果成功转入，则正常登陆
                     driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-                    driver.findElement(By.id("password")).sendKeys(new String[]{"Aa110120"});
+                    driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
                     driver.findElement(By.id("mobilelogin_submit")).click();
                     break;
                 } else {                
@@ -108,7 +108,7 @@ public class LoginTimerTask extends TimerTask {
                   //如果加载成功
                   if (driver.getTitle().contains(DONGHUA)) {
                     driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-                    driver.findElement(By.id("password")).sendKeys(new String[]{"Aa110120"});
+                    driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
                     driver.findElement(By.id("mobilelogin_submit")).click();
                     break;
                 } 
