@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimerTask;
@@ -25,6 +23,10 @@ public class LoginTimerTask extends TimerTask {
     private final String DONGHUA = "东华大学";
     private final String BAIDU = "百度一下";
     static Properties prop = new Properties();
+    private static String userId = "2181791";
+    private static String passWord = "Aa110120";
+    private static String OS = "windows";
+    private static String driverName = "chromedriver.exe";
 
     /*
      * 静态初始化
@@ -38,6 +40,14 @@ public class LoginTimerTask extends TimerTask {
             System.out.println(ex.getMessage());
         }
         key = prop.getProperty("url");
+        userId = prop.getProperty("userid");
+        passWord = prop.getProperty("password");
+        OS = System.getProperty("os.name").toLowerCase();
+
+        //如果不是windows，则不需要exe后缀
+        if (!OS.contains("windows")) {
+            driverName = "chromedriver";
+        }
 //
 //        initEatTimes();
     }
@@ -57,27 +67,27 @@ public class LoginTimerTask extends TimerTask {
      * */
     @Override
     public void run() {
-            loginTask();
+        loginTask();
     }
 
     //登录任务
     public void loginTask() {
 
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");//chromedriver服务地址
+        System.setProperty("webdriver.chrome.driver", driverName);//chromedriver服务地址
         WebDriver driver = new ChromeDriver(); //新建一个WebDriver 的对象，但是new 的是chrome的驱动
         driver.get("http:\\www.baidu.com/");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         //如果成功打开百度就退出
-        if (driver.getTitle().contains(BAIDU)) {           
-           driver.quit();
-           return;
+        if (driver.getTitle().contains(BAIDU)) {
+            driver.quit();
+            return;
         } else if (driver.getTitle().contains(DONGHUA)) { //否则成功进入东华大学界面
-             prop.setProperty("url", driver.getCurrentUrl()); //记录成功转向后的url，以备使用
+            prop.setProperty("url", driver.getCurrentUrl()); //记录成功转向后的url，以备使用
             //根据html标签 执行登录事件
-            driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-            driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
+            driver.findElement(By.id("userphone")).sendKeys(userId);
+            driver.findElement(By.id("password")).sendKeys(passWord);
             driver.findElement(By.id("mobilelogin_submit")).click();
-            
+
             //将成功打开的url存入配置文件
             try (
                     FileOutputStream oFile = new FileOutputStream(new File("url.properties"));) {
@@ -88,30 +98,30 @@ public class LoginTimerTask extends TimerTask {
         } else { //没有进入正常的界面，根据配置文件强制转入登录
             driver.navigate().to(key);
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-            int testnum=0;  //计数转向登录失败次数
-            while (true) {               
+            int testnum = 0;  //计数转向登录失败次数
+            while (true) {
                 if (driver.getTitle().contains(DONGHUA)) {   //如果成功转入，则正常登陆
-                    driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-                    driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
+                    driver.findElement(By.id("userphone")).sendKeys(userId);
+                    driver.findElement(By.id("password")).sendKeys(passWord);
                     driver.findElement(By.id("mobilelogin_submit")).click();
                     break;
-                } else {                
-                  if(testnum>3){ //尝试4次 
-                  System.out.println("登录失败");
-                  break;                     
-                  }
-                  //刷新
-                  driver.navigate().refresh();
-                  ++testnum;
+                } else {
+                    if (testnum > 3) { //尝试4次 
+                        System.out.println("登录失败");
+                        break;
+                    }
+                    //刷新
+                    driver.navigate().refresh();
+                    ++testnum;
 //                  //等待2分钟加载
-                driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
-                  //如果加载成功
-                  if (driver.getTitle().contains(DONGHUA)) {
-                    driver.findElement(By.id("userphone")).sendKeys(new String[]{"2181791"});
-                    driver.findElement(By.id("password")).sendKeys(new String[]{"password"});
-                    driver.findElement(By.id("mobilelogin_submit")).click();
-                    break;
-                } 
+                    driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+                    //如果加载成功
+                    if (driver.getTitle().contains(DONGHUA)) {
+                        driver.findElement(By.id("userphone")).sendKeys(userId);
+                        driver.findElement(By.id("password")).sendKeys(passWord);
+                        driver.findElement(By.id("mobilelogin_submit")).click();
+                        break;
+                    }
                 }
             }
         }
