@@ -5,5 +5,9 @@
         <group name="最新版本代码">
             <file>file:/E:/neatbeanscode/seleniumtest/src/seleniumtest/LoginTimerTask.java</file>
         </group>
+        <group>
+            <file>file:/Users/knightsong/Documents/project/Campus-network-automatic-login/seleniumtest/src/seleniumtest/LoginTimerTask.java</file>
+            <file>file:/Users/knightsong/Documents/project/Campus-network-automatic-login/seleniumtest/src/seleniumtest/Seleniumtest.java</file>
+        </group>
     </open-files>
 </project-private>
